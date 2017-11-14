@@ -1,20 +1,20 @@
 * {
-	font-family: Roboto, Helvetica, Arial, sans-serif;
+	font-family: Roboto, Arial, sans-serif;
 	font-weight: 700;
 }
 
 h1 {
-	font-family: Roboto, Helvetica, Arial, sans-serif;
+	font-family: Roboto, Arial, sans-serif;
 	font-size: 40px;
 	color: #A5C2E6;
-	line-height: 60px;
-	font-weight: 200;
+	line-height: 50px;
+	font-weight: 150;
 }
 
 h2 {
-	font-size: 24px;
+	font-size: 25px;
 	color: #A5C2E6;
-	line-height: 29px;
+	line-height: 20px;
 }
 
 h3 {
@@ -23,11 +23,11 @@ h3 {
 	line-height: 23px;
 }
 p {
- 	font-family: Roboto, Helvetica, Arial, sans-serif;
+ 	font-family: Roboto, Arial, sans-serif;
  	font-size: 16px;
  	color: #AFC2BE;
  	line-height: 24px;
- 	font-weight: 400;
+ 	font-weight: 300;
  }
 
 strong {
