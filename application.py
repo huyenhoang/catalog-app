@@ -66,12 +66,14 @@ def gconnect():
     # verify that the access token is used for intended user
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
-        response = make_response(json.dumps("Token's user ID doesn't match given user ID."), 401)
+        response = make_response(json.dumps(
+            "Token's user ID doesn't match given user ID."), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     # verify that the access token is valid for this app
     if result['issued_to'] != CLIENT_ID:
-        response = make_response(json.dumps("Token's client ID does not match app's"), 401)
+        response = make_response(json.dumps(
+            "Token's client ID does not match app's"), 401)
         print "Token's client ID does not match app's client ID."
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -79,7 +81,8 @@ def gconnect():
     stored_credentials = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'), 200)
+        response = make_response(json.dumps(
+            'Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
     # store access token in the session for later use.
@@ -143,7 +146,8 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps(
+            'Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -273,7 +277,7 @@ def newCategory():
     if request.method == 'POST':
         newCategory = Categories(category=request.form['name'], user_id=login_session['user_id'])
         session.add(newCategory)
-        flash('New category %s successfully added to list' % newCategory.category)
+        flash('Category %s successfully added to list' % newCategory.category)
         session.commit()
         return redirect(url_for('showCategories'))
     else:
@@ -290,7 +294,7 @@ def editCategory(category_id):
     if request.method == 'POST':
         if request.form['name']:
             editedCategory.category = request.form['name']
-            flash('This category was successfully edited: %s' % editedCategory.category)
+            flash('Category successfully edited: %s' % editedCategory.category)
             return redirect(url_for('showCategories'))
     else:
         return render_template('editCategory.html', category=editedCategory)
@@ -304,7 +308,9 @@ def deleteCategory(category_id):
     if 'username' not in login_session:
         return redirect('/login')
     if categoryToDelete.user_id != login_session['user_id']:
-        return "<script>function myFunction() {alert('Sorry but you are not authorized to delete this category.');}</script>/body onload='myFunction()''>"
+        return """<script>function myFunction()
+            {alert('Sorry but you are not authorized to delete this category.');}
+            </script>/body onload='myFunction()''>"""
     if request.method == 'POST':
         session.delete(categoryToDelete)
         flash('Category %s was successfully deleted' % categoryToDelete.category)
