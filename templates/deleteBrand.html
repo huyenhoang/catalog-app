@@ -1,0 +1,24 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+{% block content %}
+<div class="row">
+      <h2> Are you sure you want to delete {{inc.name}}?</h2>
+</div>
+<div class="row">
+      <form action="{{url_for('deleteBrand', category_id=inc.category_id, brand_id=inc.id )}}" method='post'>
+        <div class="form-group">
+          <p>This cannot be reversed!</p>
+          <!-- Delete -->
+          <button type="submit" class="btn btn-warning btn-lg" id="submit" type="submit">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete
+          </button>
+        </div>
+      </form>
+      <!--Cancel -->
+      <a href="{{ url_for('showBrands', category_id=inc.category_id )}}">
+        <button class="btn btn-danger btn-lg">
+          <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
+        </button>
+      </a>
+</div>
+{% endblock  %}

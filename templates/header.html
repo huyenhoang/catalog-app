@@ -1,0 +1,16 @@
+<div class="sticky-top">
+    <div class="btn-info btn-block">
+        <div>
+            <a class="btn btn-info btn-lg" href="{{url_for('showCategories')}}">
+                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home
+            </a>
+        </div>
+        <div class="text-right clearfix">
+            {%if 'username' not in session %}
+                <a class="btn btn-info btn-lg" href="{{url_for('showLogin')}}">Click Here to Login </a>
+            {% else %}
+                <a class="btn btn-info btn-lg" href="{{url_for('disconnect')}}">Logout </a>
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+{% block content %}
+<!-- Brands' owner -->
+<div class="row">
+    <h2>{{ category.category }}</h2>
+</div>
+<div class="row">
+    <figure class="owner">
+        <img src="{{owner.picture}}" class="img-thumbnail">
+    </figure>
+</div>
+<div class="row">
+    <h2>{{owner.name}} make money on these platforms in this category:</h2>
+        <ul>
+            {% for inc in brands %}
+            <li><a href="https://www.{{inc.website}}">{{ inc.name }}</a></li>
+            {% endfor %}
+        </ul>
+</div>
+{% endblock %}

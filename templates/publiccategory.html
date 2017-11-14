@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+{% block content %}
+<div class="row">
+        <h2>Categories</h2>
+</div>
+<!-- Rendering Categories -->
+<div class="row">
+  <div>
+    {% for category in category %}
+      <a href = "{{url_for('showBrands', category_id = category.id)}}">
+        <p>{{category.category}}</p>
+      </a>
+      <br>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

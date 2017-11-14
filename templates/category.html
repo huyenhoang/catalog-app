@@ -1,0 +1,26 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+{% block content %}
+<div class="row">
+    <h2>{{category.category}}</h2>
+    <h3>Gig Economy Categories</h3>
+</div>
+<div class="row">
+    <div>
+    {% for category in category %}
+      <a href="{{url_for('showBrands', category_id=category.id)}}">
+          <div class="category">
+              <h3>{{category.category}}</h3>
+          </div>
+      </a>
+    {% endfor %}
+    </div>
+</div>
+<div class="row">
+    <a href="{{url_for('newCategory')}}">
+        <button class="btn btn-primary btn-lg">
+            <span class="glyphicon glyphicon-plus"></span>Add new category
+        </button>
+    </a>
+</div>
+{% endblock %}
