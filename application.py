@@ -257,8 +257,6 @@ def createUser(login_session):
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
     return user.id
-=======
->>>>>>> 0ab48f459bc38d3294294b8b8d14145b928dbf35
 
 # API Endpoints
 
