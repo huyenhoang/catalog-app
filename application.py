@@ -415,8 +415,6 @@ def deleteBrand(category_id, brand_id):
     else:
         return render_template('deleteBrand.html', category_id=category_id, brand_id=brand_id, inc=deletedBrand)
 
-<<<<<<< HEAD
-=======
 # for users
 
 
@@ -440,7 +438,6 @@ def createUser(login_session):
     user = session.query(User).filter_by(email=login_session['email']).one()
     return user.id
 
->>>>>>> 0ab48f459bc38d3294294b8b8d14145b928dbf35
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True
