@@ -1,45 +1,59 @@
 * {
-	font-family: "Helvetica Neue Bold", Roboto, Helvetica, Arial, sans-serif;
-	font-weight: 700;
+	font-family: Roboto, Arial, sans-serif;
+	font-weight: 400;
 }
 
 h1 {
-	font-family: "Helvetica Neue Light", Roboto, Helvetica, Arial, sans-serif;
-	font-size: 50px;
-	color: #51453B;
-	line-height: 60px;
-	font-weight: 300;
+	font-family: Roboto, Arial, sans-serif;
+	font-size: 40px;
+	color: #A5C2E6;
+	line-height: 50px;
+	font-weight: 150;
 }
 
 h2 {
-	font-size: 24px;
-	color: #42C3C9;
-	line-height: 29px;
+	font-size: 25px;
+	color: #A5C2E6;
+	line-height: 20px;
 }
 
 h3 {
 	font-size: 18px;
-	color: #4A4A4A;
+	color: #A5C2E6;
 	line-height: 23px;
 }
 p {
- 	font-family: "Helvetica Neue", Roboto, Helvetica, Arial, sans-serif;
+ 	font-family: Roboto, Arial, sans-serif;
  	font-size: 16px;
- 	color: #7B7573;
+ 	color: #AFC2BE;
  	line-height: 24px;
- 	font-weight: 400;
+ 	font-weight: 300;
  }
+
 strong {
  	font-size: 16px;
- 	color: #7B7573;
+ 	color: #A5C2E6;
  	line-height: 24px;
  }
 
 a {
- 	font-size: 14px;
- 	color: #0093B9;
- 	line-height: 17px;
+ 	font-size: 16px;
+ 	color: #A5C2E6;
+ 	line-height: 18px;
  }
+
+ .cancel {
+	 float: right;
+	 clear:both;
+ }
+
+ .brand-info {
+	 width: 100%;
+ }
+ 
+.head {
+	color: white;
+}
 
 .btn {
 	padding: 20px;
@@ -66,8 +80,8 @@ a {
 
 .owner figcaption {
 	font-size: 14px;
-	color: #7B7573;
-	font-weight: 400;
+	color: #A5C2E6;
+	font-weight: 200;
 	margin-top: -20px;
 }
 
