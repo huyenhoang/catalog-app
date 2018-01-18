@@ -233,8 +233,6 @@ def disconnect():
     else:
         flash("You were not logged in to begin with!")
         redirect(url_for('showCategories'))
-<<<<<<< HEAD
-
 # for users
 
 def getUserID(email):
