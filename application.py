@@ -13,14 +13,22 @@ import httplib2
 import json
 import requests
 
+# google login
+from flask_oauth import OAuth
 
 app = Flask(__name__)
+
+# google login
+GOOGLE_CLIENT_ID = '733366748366-6d90n2toh4ah0njqau20o1cmp56522b9.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = 'cOZAMTSunZEILZxEQY36rSBN'
+
+
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Gig Economy Catalog App"
-# Create session, connectwith database
 
+# Create session, connectwith database
 engine = create_engine('sqlite:///categorywithusers.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
@@ -153,7 +161,6 @@ def gdisconnect():
 
 # Login with facebook
 
-
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
     if request.args.get('state') != login_session['state']:
@@ -250,8 +257,8 @@ def getUserInfo(user_id):
 
 def createUser(login_session):
     newUser = User(
-        name=login-session['username'], 
-        email=login_session['email'], 
+        name=login-session['username'],
+        email=login_session['email'],
         picture=login_session['picture'])
     session.add(newUser)
     session.commit()
