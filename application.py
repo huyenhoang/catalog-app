@@ -13,14 +13,9 @@ import httplib2
 import json
 import requests
 
-# google login
-from flask_oauth import OAuth
 
 app = Flask(__name__)
 
-# google login
-GOOGLE_CLIENT_ID = '733366748366-6d90n2toh4ah0njqau20o1cmp56522b9.apps.googleusercontent.com'
-GOOGLE_CLIENT_SECRET = 'cOZAMTSunZEILZxEQY36rSBN'
 
 
 

@@ -31,6 +31,7 @@ class Categories(Base):
 
     id = Column(Integer, primary_key=True)
     category = Column(String(80), nullable=False)
+    image = Column(String(250), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
 
@@ -39,6 +40,7 @@ class Categories(Base):
         return {
             'id': self.id,
             'category': self.category,
+            'image': self.image
         }
 
 class Brands(Base):
