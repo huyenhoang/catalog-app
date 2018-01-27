@@ -20,10 +20,21 @@ DBSession = sessionmaker(bind=engine)
 # session.rollback()
 session = DBSession()
 
+
+# Create start users
+User1 = User(name="Huyen Huyen", email="ssjhuyen@gmail.com",
+             picture='https://avatars2.githubusercontent.com/u/14067388?s=460&v=4')
+session.add(User1)
+session.commit()
+
+User2 = User(name="Huyen Hoang", email="twin_a_33@yahoo.com",
+             picture='https://static1.squarespace.com/static/519f76f7e4b0db707ac0650b/t/562203c4e4b021dd851f7129/1445069777027/?format=750w')
+session.add(User2)
+session.commit()
+
+
 # Brands for Rideshare Category
-category1 = Categories(user_id=1, id=1,
-        image="https://images.unsplash.com/photo-1482029255085-35a4a48b7084?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e39f4577aaa96dc4c2806e7d890a656e&auto=format&fit=crop&w=1489&q=80",
-        category="Rideshare")
+category1 = Categories(user_id=1, id=1, category="Rideshare")
 
 session.add(category1)
 session.commit()
@@ -53,9 +64,7 @@ session.add(brand3)
 session.commit()
 
 # Brands for Food Delivery Category
-category2 = Categories(user_id=1, id=2,
-        image="https://images.unsplash.com/photo-1428660386617-8d277e7deaf2?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d85cfa1d6d003f6e82f46bc5a394a592&auto=format&fit=crop&w=1567&q=80",
-        category="Food Delivery")
+category2 = Categories(user_id=1, id=2, category="Food Delivery")
 
 session.add(category2)
 session.commit()
@@ -117,9 +126,7 @@ session.add(brand10)
 session.commit()
 
 # Brands for Travel Category
-category3 = Categories(user_id=1, id=3,
-        image="https://images.unsplash.com/photo-1484544808355-8ec84e534d75?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=fc1407c2a550b0ebf3def8b81fa7b4a2&auto=format&fit=crop&w=1366&q=80",
-        category="Travel")
+category3 = Categories(user_id=1, id=3, category="Travel")
 
 session.add(category3)
 session.commit()
@@ -149,9 +156,7 @@ session.add(brand13)
 session.commit()
 
 # Brands for Home Services Category
-category4 = Categories(user_id=1, id=4,
-        image="https://images.unsplash.com/photo-1504148455328-c376907d081c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8aa0df958e322abceb9b1ac178669cae&auto=format&fit=crop&w=1443&q=80",
-        category="Home Services")
+category4 = Categories(user_id=1, id=4, category="Home Services")
 
 session.add(category4)
 session.commit()
@@ -181,9 +186,7 @@ session.add(brand16)
 session.commit()
 
 # Brands for Pet Care Category
-category5 = Categories(user_id=1, id=5,
-        image="https://images.unsplash.com/photo-1504803542671-cb92eb06a148?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c453a62d33c0c3a2b43fcb44152504f&auto=format&fit=crop&w=1350&q=80",
-        category="Pet Care")
+category5 = Categories(user_id=1, id=5, category="Pet Care")
 
 session.add(category5)
 session.commit()
@@ -205,9 +208,7 @@ session.add(brand18)
 session.commit()
 
 # Brands for Health Category
-category6 = Categories(user_id=1, id=6,
-        image="https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=d95859639b5694086008907139a72294&auto=format&fit=crop&w=1350&q=80",
-        category="Health")
+category6 = Categories(user_id=1, id=6, category="Health")
 
 session.add(category6)
 session.commit()
@@ -229,9 +230,7 @@ session.add(brand20)
 session.commit()
 
 # Brands for Writing Category
-category7 = Categories(user_id=1, id=7,
-        image="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=349f0586d07c10fdf29da504276b5407&auto=format&fit=crop&w=1350&q=80",
-        category="Writing")
+category7 = Categories(user_id=1, id=7, category="Writing")
 
 session.add(category7)
 session.commit()
@@ -253,9 +252,7 @@ session.add(brand22)
 session.commit()
 
 # Brands for Programming Category
-category8 = Categories(user_id=1, id=8,
-        image="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a00dd14dd25d32b799b8e6e0270fd535&auto=format&fit=crop&w=1352&q=80",
-        category="Programming")
+category8 = Categories(user_id=1, id=8, category="Programming")
 
 session.add(category8)
 session.commit()
