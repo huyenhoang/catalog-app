@@ -1,97 +1,54 @@
-* {
-	font-family: Roboto, Arial, sans-serif;
-	font-weight: 400;
+/* --- Global --- */
+
+a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
 }
 
-h1 {
-	font-family: Roboto, Arial, sans-serif;
-	font-size: 40px;
-	color: #A5C2E6;
-	line-height: 50px;
-	font-weight: 150;
+/* --- Nav --- */
+
+/* --- Jumbotron --- */
+
+/* --- Footer --- */
+
+.fa i {
+  font-size: 20px;
+}
+/* --- Categories --- */
+
+.thumbnail {
+    padding: 0;
 }
 
-h2 {
-	font-size: 25px;
-	color: #A5C2E6;
-	line-height: 20px;
+.thumbnail .caption-full {
+    padding: 9px;
 }
 
-h3 {
-	font-size: 18px;
-	color: #A5C2E6;
-	line-height: 23px;
-}
-p {
- 	font-family: Roboto, Arial, sans-serif;
- 	font-size: 16px;
- 	color: #AFC2BE;
- 	line-height: 24px;
- 	font-weight: 300;
- }
-
-strong {
- 	font-size: 16px;
- 	color: #A5C2E6;
- 	line-height: 24px;
- }
-
-a {
- 	font-size: 16px;
- 	color: #A5C2E6;
- 	line-height: 18px;
- }
-
- .cancel {
-	 float: right;
-	 clear:both;
- }
-
- .brand-info {
-	 width: 100%;
- }
- 
-.head {
-	color: white;
+.img-thumbnail {
+  background-size: cover;
+  background-position: center center;
+  height: 200px;
+  width: 100%;
 }
 
-.btn {
-	padding: 20px;
-	margin: 0;
-	border-color: #9FB80A;
-	border-width: 2px;
-	color: #9FB80A;;
-}
-.glyphicon {
-	margin-right: 10px;
+/* --- Brands --- */
+.brand-button {
+  padding: 5px;
+  margin: 5px;
 }
 
-.owner {
-	padding-right: 20px;
-	margin-top: -20px;
-	text-align: right;
-	float:right;
-}
 
-.owner img {
-	width: 100px;
-	border-radius: 50%;
-}
+/* --- Login page --- */
 
-.owner figcaption {
-	font-size: 14px;
-	color: #A5C2E6;
-	font-weight: 200;
-	margin-top: -20px;
-}
+/* --- Forms --- */
+
+/* --- Flash messaging --- */
 
 .flash {
-	background-color: #FFFF00;
-	width:100%;
-	text-decoration: none;
-}
+  background: #F9F9CC;
+  padding: 10px;
+  margin: auto;
+  list-style: none;
+  text-align: center;
 
-.flash li {
-	list-style-type: none;
-	text-align: center;
 }
