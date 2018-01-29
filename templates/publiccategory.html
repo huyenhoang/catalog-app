@@ -1,18 +1,24 @@
 {% extends "main.html" %}
 {% include "header.html" %}
 {% block content %}
-<div class="row">
-        <h2>Categories</h2>
-</div>
+
+<h2>Categories</h2>
 <!-- Rendering Categories -->
 <div class="row">
-  <div>
-    {% for category in category %}
-      <a href = "{{url_for('showBrands', category_id = category.id)}}">
-        <p>{{category.category}}</p>
-      </a>
-      <br>
-    {% endfor %}
-  </div>
+  {% for category in category %}
+    <div class="col-sm-4" style="background-image: url("{{category.image}}"); background-size: cover">
+      sss
+    </div>
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img class="img-thumbnail rounded" src="{{category.image}}, category_id = category.id">
+        <div class="caption">
+          <a href = "{{url_for('showBrands', category_id = category.id)}}">
+              <p>{{category.category}}</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
 </div>
 {% endblock %}

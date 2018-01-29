@@ -1,25 +1,29 @@
 {% extends "main.html" %}
 {% include "header.html" %}
 {% block content %}
-<div class="row">
+<div class="row container-fluid">
     <h2>Edit this category: {{category.category}}</h2>
 </div>
-<div class="row">
-    <form class="jumbotron" action="{{ url_for('editCategory', category_id=category.id )}}" method = "post">
+<div class="row container-fluid">
+    <form class="container-fluid" action="{{ url_for('editCategory', category_id=category.id )}}" method = "post">
         <div class="form-group">
-            <label for="name">Name:</label>
             <!--Save Edit-->
-            <input type ="text" class="form-control" maxlength="100" name="name" value="{{category.category }}">
-            <button type="submit" class="btn btn-primary btn-lg" id="submit" type="submit">
-				<span class="glyphicon glyphicon-saved" aria-hidden="true"></span>Save
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" maxlength="100" name="name" value="{{ category.category }}">
+            <br>
+            <label for="image">New image url:</label>
+            <input type="text" class="form-control" maxlength="250" name="image" value="{{ category.image }}">
+            <br>
+            <button type="submit" class="btn btn-success btn-block btn-lg" id="submit" type="submit">
+              <i class="fa fa-floppy-o" aria-hidden="true"></i> Save
             </button>
-            <!--Cancel, basically a back button-->
-            <a href="{{url_for('showCategories')}}">
-                <button class="btn btn-danger btn-lg">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Cancel
-                </button>
-            </a>
         </div>
     </form>
+    <!--Cancel, basically a back button-->
+    <a class="container-fluid" href="{{url_for('showCategories')}}">
+        <button class="btn btn-danger btn-block btn-lg">
+            <i class="fa fa-times" aria-hidden="true"></i>  Cancel
+        </button>
+    </a>
 </div>
 {% endblock %}

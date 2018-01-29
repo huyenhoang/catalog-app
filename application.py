@@ -13,23 +13,21 @@ import httplib2
 import json
 import requests
 
-
 app = Flask(__name__)
 
 
 
-
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+                       open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Gig Economy Catalog App"
 
-# Create session, connect with database
+# Create session, connectwith database
 engine = create_engine('sqlite:///categorywithusers.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# Login routes
+
 @app.route('/login/')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
@@ -53,9 +51,9 @@ def gconnect():
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
         response = make_response(json.dumps(
-            'Failed to upgrade the authorization code.'), 401)
-        response.headers['Content-Type'] = 'application/json'
-        return response
+                                            'Failed to upgrade the authorization code.'), 401)
+                                            response.headers['Content-Type'] = 'application/json'
+                                            return response
     # check that the access token is valid
     access_token = credentials.access_token
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
@@ -70,46 +68,46 @@ def gconnect():
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
         response = make_response(json.dumps(
-            "Token's user ID doesn't match given user ID."), 401)
-        response.headers['Content-Type'] = 'application/json'
-        return response
-    # verify that the access token is valid for this app
-    if result['issued_to'] != CLIENT_ID:
-        response = make_response(json.dumps(
-            "Token's client ID does not match app's"), 401)
+                                            "Token's user ID doesn't match given user ID."), 401)
+                                            response.headers['Content-Type'] = 'application/json'
+                                            return response
+# verify that the access token is valid for this app
+if result['issued_to'] != CLIENT_ID:
+    response = make_response(json.dumps(
+                                        "Token's client ID does not match app's"), 401)
         print "Token's client ID does not match app's client ID."
         response.headers['Content-Type'] = 'application/json'
         return response
-    # check to see if user is already logged in
-    stored_credentials = login_session.get('access_token')
-    stored_gplus_id = login_session.get('gplus_id')
-    if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps(
-            'Current user is already connected.'), 200)
+                                        # check to see if user is already logged in
+                                        stored_credentials = login_session.get('access_token')
+                                        stored_gplus_id = login_session.get('gplus_id')
+if stored_access_token is not None and gplus_id == stored_gplus_id:
+    response = make_response(json.dumps(
+                                        'Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
-    # store access token in the session for later use.
-    login_session['access_token'] = credentials.access_token
-    login_session['gplus_id'] = gplus_id
+                                        # store access token in the session for later use.
+                                        login_session['access_token'] = credentials.access_token
+                                        login_session['gplus_id'] = gplus_id
 
-    # get user info
-    userinfo_url = "https://www.googleapis.com/oauth2/v1/usrinfo"
+# get user info
+userinfo_url = "https://www.googleapis.com/oauth2/v1/usrinfo"
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
-
+    
     data = answer.json()
-
+    
     login_session['username'] = data["name"]
     login_session['picture'] = data["picture"]
     login_session['email'] = data["email"]
-
+    
     # see if user exists, if it doesn't it doesn't make one
     user_id = getUserID(login_session['email'])
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
 
-    output = ''
+output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
     output += '!</h1>'
@@ -150,9 +148,9 @@ def gdisconnect():
         return response
     else:
         response = make_response(json.dumps(
-            'Failed to revoke token for given user.', 400))
-        response.headers['Content-Type'] = 'application/json'
-        return response
+                                            'Failed to revoke token for given user.', 400))
+                                            response.headers['Content-Type'] = 'application/json'
+                                            return response
 
 # Login with facebook
 
@@ -179,18 +177,18 @@ def fbconnect():
     login_session['facebook_id'] = data["id"]
 
 # get user pic
-    url = 'https://graph.facebook/v2.2/me/picture?%s&redirect=0&height=200&width=200' % token
+url = 'https://graph.facebook/v2.2/me/picture?%s&redirect=0&height=200&width=200' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
     login_session['picture'] = data["data"]["url"]
-
+    
     user_id = getUserID(login_session['email'])
     if not user_id:
         user_id = createUser(login_session)
     login_session['user_id'] = user_id
 
-    output = ''
+output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
     output += '!</h1>'
@@ -252,13 +250,13 @@ def getUserInfo(user_id):
 
 def createUser(login_session):
     newUser = User(
-        name=login-session['username'],
-        email=login_session['email'],
-        picture=login_session['picture'])
-    session.add(newUser)
-    session.commit()
-    user = session.query(User).filter_by(email=login_session['email']).one()
-    return user.id
+                   name=login-session['username'],
+                   email=login_session['email'],
+                   picture=login_session['picture'])
+                   session.add(newUser)
+                   session.commit()
+                   user = session.query(User).filter_by(email=login_session['email']).one()
+                   return user.id
 
 # API Endpoints
 
@@ -288,20 +286,20 @@ def brandDataJSON(category_id, brand_id):
 @app.route('/categories/')
 def showCategories():
     category = session.query(Categories).order_by(Categories.category)
-    if 'username' not in login_session:
-        return render_template('publiccategory.html', category=category)
-    else:
-        return render_template('category.html', category=category)
+    #if 'username' not in login_session:
+    #return render_template('publiccategory.html', category=category)
+    #else:
+    return render_template('category.html', category=category)
 
 # Add new a category
 
 
 @app.route('/categories/new/', methods=['GET', 'POST'])
 def newCategory():
-    if 'username' not in login_session:
-        return redirect('/login')
+    #if 'username' not in login_session:
+    #return redirect('/login')
     if request.method == 'POST':
-        newCategory = Categories(category=request.form['name'], user_id=login_session['user_id'])
+        newCategory = Categories(category=request.form['name'], image=request.form['image'], user_id=login_session['user_id'])
         session.add(newCategory)
         flash('Category %s successfully added to list' % newCategory.category)
         session.commit()
@@ -314,13 +312,17 @@ def newCategory():
 
 @app.route('/categories/<int:category_id>/edit/', methods=['GET', 'POST'])
 def editCategory(category_id):
-    if 'username' not in login_session:
-        return redirect('/login')
+    #if 'username' not in login_session:
+    #return redirect('/login')
     editedCategory = session.query(Categories).filter_by(id=category_id).one()
     if request.method == 'POST':
         if request.form['name']:
             editedCategory.category = request.form['name']
-            flash('Category successfully edited: %s' % editedCategory.category)
+        if request.form['image']:
+            editedCategory.image = request.form['image']
+            session.add(editedCategory)
+            session.commit()
+            flash('Category name or image successfully edited: %s' % editedCategory.category)
             return redirect(url_for('showCategories'))
     else:
         return render_template('editCategory.html', category=editedCategory)
@@ -331,12 +333,12 @@ def editCategory(category_id):
 @app.route('/categories/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
     categoryToDelete = session.query(Categories).filter_by(id=category_id).one()
-    if 'username' not in login_session:
-        return redirect('/login')
-    if categoryToDelete.user_id != login_session['user_id']:
-        return """<script>function myFunction()
-            {alert('Sorry but you are not authorized to delete this category.');}
-            </script>/body onload='myFunction()''>"""
+    #if 'username' not in login_session:
+    #return redirect('/login')
+    #if categoryToDelete.user_id != login_session['user_id']:
+    #return """<script>function myFunction()
+    #{alert('Sorry but you are not authorized to delete this category.');}
+    #</script>/body onload='myFunction()''>"""
     if request.method == 'POST':
         session.delete(categoryToDelete)
         flash('Category %s was successfully deleted' % categoryToDelete.category)
@@ -354,18 +356,18 @@ def showBrands(category_id):
     category = session.query(Categories).filter_by(id=category_id).one()
     owner = getUserInfo(category.user_id)
     brands = session.query(Brands).filter_by(category_id=category_id)
-    if 'username' not in login_session or owner.id != login_session['user_id']:
-        return render_template('publicbrands.html', brands=brands, category=category, owner=owner)
-    else:
-        return render_template('brands.html', category=category, brands=brands, owner=owner)
+    #if 'username' not in login_session or owner.id != login_session['user_id']:
+    #return render_template('publicbrands.html', brands=brands, category=category, owner=owner)
+    #else:
+    return render_template('brands.html', category=category, brands=brands, owner=owner)
 
 # Add a new brand
 
 
 @app.route('/categories/<int:category_id>/brands/new/', methods=['GET', 'POST'])
 def newBrand(category_id):
-    if 'username' not in login_session:
-        return redirect('/login')
+    #if 'username' not in login_session:
+    #return redirect('/login')
     if request.method == 'POST':
         newBrand = Brands(name=request.form['name'], location=request.form['location'], description=request.form['description'], website=request.form['website'], category_id=category_id, user_id=login_session['user_id'])
         session.add(newBrand)
@@ -380,8 +382,8 @@ def newBrand(category_id):
 
 @app.route('/categories/<int:category_id>/brands/<int:brand_id>/edit/', methods=['GET', 'POST'])
 def editBrand(category_id, brand_id):
-    if 'username' not in login_session:
-        return redirect('/login')
+    #if 'username' not in login_session:
+    #return redirect('/login')
     editedBrand = session.query(Brands).filter_by(id=brand_id).one()
     if request.method == 'POST':
         if request.form['name']:
@@ -394,7 +396,7 @@ def editBrand(category_id, brand_id):
             editedBrand.website = request.form['website']
         session.add(editedBrand)
         session.commit()
-        flash("This brand has been edited!")
+        flash("Your edit has been saved")
         return redirect(url_for('showBrands', category_id=category_id))
     else:
         return render_template('editBrand.html', category_id=category_id, brand_id=brand_id, inc=editedBrand)
@@ -404,15 +406,15 @@ def editBrand(category_id, brand_id):
 
 @app.route('/categories/<int:category_id>/brands/<int:brand_id>/delete/', methods=['GET', 'POST'])
 def deleteBrand(category_id, brand_id):
-    if 'username' not in login_session:
-        return redirect('/login')
+    #if 'username' not in login_session:
+    #return redirect('/login')
     deletedBrand = session.query(Brands).filter_by(id=brand_id).one()
     if request.method == 'POST':
         if request.form['name']:
             deletedBrand.name = request.form['name']
         session.add(deletedBrand)
         session.commit()
-        flash("This brand has been deleted!")
+        flash("Brand has been deleted!")
         return redirect(url_for('showBrands', category_id=category_id))
     else:
         return render_template('deleteBrand.html', category_id=category_id, brand_id=brand_id, inc=deletedBrand)

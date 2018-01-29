@@ -1,25 +1,32 @@
 {% extends "main.html" %}
 {% include "header.html" %}
 {% block content %}
-<div class="row">
-    <h2>{{category.category}}</h2>
-    <h3>Gig Economy Categories</h3>
+<div class="row container-fluid">
+    <h2>Categories</h2>
 </div>
+<hr>
+<!-- Rendering Categories -->
 <div class="row">
-    <div>
-    {% for category in category %}
-      <a href="{{url_for('showBrands', category_id=category.id)}}">
-          <div class="category">
-              <h3>{{category.category}}</h3>
-          </div>
-      </a>
-    {% endfor %}
+  {% for category in category %}
+    <div class="col-sm-4">
+      <div class="thumbnail">
+        <img class="img-thumbnail rounded" src="{{category.image}}, category_id = category.id">
+        <div class="caption">
+          <a href= "{{url_for('showBrands', category_id = category.id)}}">
+              <p>{{category.category}}</p>
+          </a>
+        </div>
+      </div>
     </div>
+    <br>
+  {% endfor %}
 </div>
-<div class="row">
+<hr>
+<!-- Button to add new categories -->
+<div class="text-center row container-fluid">
     <a href="{{url_for('newCategory')}}">
-        <button class="btn btn-primary btn-lg">
-            <span class="glyphicon glyphicon-plus"></span>Add new category
+        <button class="btn btn-primary btn-block text-center">
+            <i class="fa fa-plus" aria-hidden="true"></i> Add new category
         </button>
     </a>
 </div>

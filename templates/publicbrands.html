@@ -2,23 +2,12 @@
 {% include "header.html" %}
 {% block content %}
 <!-- Brands' owner -->
-<div class="row">
-    <h2>{{ category.category }}</h2>
-</div>
-<br>
-<br>
-<div class="row">
-    <figure class="owner">
-        <img src="{{owner.picture}}" class="img-thumbnail">
-    </figure>
-</div>
-<div class="row">
-    <h2>{{owner.name}} make money on these platforms in this category:</h2>
+    <h2>{{ category.category }}:</h2>
+          <!-- <img src="{{owner.picture}}" class="img-thumbnail"> -->
+          <!-- <p>{{owner.name}} make money on these platforms in this category:</p> -->
         <ul>
             {% for inc in brands %}
-            <li><a href="https://www.{{inc.website}}" target="_blank">{{ inc.name }}</a></li>
+            <li><a class="brand-website-link" href="https://www.{{inc.website}}" target="_blank">{{ inc.name }}</a></li>
             {% endfor %}
         </ul>
-</div>
-<br>
 {% endblock %}

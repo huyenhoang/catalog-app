@@ -4,25 +4,30 @@
 <div class="row">
       <h2>Edit this brand: {{inc.name}}</h2>
 </div>
-<div class="row">
-      <form class="jumbotron" action= "{{url_for('editBrand', category_id=category_id, brand_id=inc.id)}}" method = 'POST'>
+<div class="row container-fluid">
+      <form class="container-fluid" action= "{{url_for('editBrand', category_id=category_id, brand_id=inc.id)}}" method = 'POST'>
           <div class="form-group">
               <label for"name">Name:</label>
               <input type ='text' size='30' maxlength="100" class="form-control" name='name' placeholder='{{inc.name}}'>
+              <br>
               <label for="location">Location:</label>
               <input type ="text" maxlength="100" class="form-control" name="location" placeholder="{{inc.location}}">
+              <br>
               <label for="description">Description:</label>
               <textarea class="form-control" maxlength="250" rows="3" name="description">{{inc.description}}</textarea>
+              <br>
               <label for="website">Website:</label>
               <input type="text" class="form-control" maxlength="100" name="website" placeholder="Example: {{inc.website}} - Do not include https:// with new website domain.">
+              <br>
               <!-- Submit edits -->
-              <button type="submit" class="btn btn-success btn-lg" id="submit" type="submit">
-                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save
+              <button type="submit" class="btn btn-success btn-block btn-lg" id="submit" type="submit">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i> Save
               </button>
+              <br>
               <!-- Cancel edits -->
               <a href='{{url_for('showBrands', category_id=inc.category_id)}}'>
-                <button class="btn btn-danger btn-lg">
-                  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
+                <button class="btn btn-danger btn-block btn-lg">
+                  <i class="fa fa-times" aria-hidden="true"></i> Cancel
                 </button>
               </a>
           </div>

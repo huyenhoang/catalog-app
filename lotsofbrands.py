@@ -21,20 +21,20 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-# Create start users
-User1 = User(name="Huyen Huyen", email="ssjhuyen@gmail.com",
+# Create dummy user
+User1 = User(name="Huyen Hoang", email="courierhacker@gmail.com",
              picture='https://avatars2.githubusercontent.com/u/14067388?s=460&v=4')
 session.add(User1)
 session.commit()
 
-User2 = User(name="Huyen Hoang", email="twin_a_33@yahoo.com",
-             picture='https://static1.squarespace.com/static/519f76f7e4b0db707ac0650b/t/562203c4e4b021dd851f7129/1445069777027/?format=750w')
-session.add(User2)
+User2 = User(name="Huyen Hoang", email="huyenhoang33@gmail.com",
+             picture='https://avatars2.githubusercontent.com/u/14067388?s=460&v=4')
+session.add(User1)
 session.commit()
 
-
 # Brands for Rideshare Category
-category1 = Categories(user_id=1, id=1, category="Rideshare")
+category1 = Categories(user_id=1, id=1, category="Rideshare",
+    image="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6e234f70b9f742c37a8a21c8e91d28d5&auto=format&fit=crop&w=1350&q=80")
 
 session.add(category1)
 session.commit()
@@ -64,7 +64,8 @@ session.add(brand3)
 session.commit()
 
 # Brands for Food Delivery Category
-category2 = Categories(user_id=1, id=2, category="Food Delivery")
+category2 = Categories(user_id=1, id=2, category="Food Delivery",
+    image="https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a98ac47048f530b6d587279d52c13ab7&auto=format&fit=crop&w=1336&q=80")
 
 session.add(category2)
 session.commit()
@@ -126,7 +127,8 @@ session.add(brand10)
 session.commit()
 
 # Brands for Travel Category
-category3 = Categories(user_id=1, id=3, category="Travel")
+category3 = Categories(user_id=1, id=3, category="Travel",
+    image="https://images.unsplash.com/photo-1484544808355-8ec84e534d75?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=fc1407c2a550b0ebf3def8b81fa7b4a2&auto=format&fit=crop&w=1366&q=80")
 
 session.add(category3)
 session.commit()
@@ -156,7 +158,8 @@ session.add(brand13)
 session.commit()
 
 # Brands for Home Services Category
-category4 = Categories(user_id=1, id=4, category="Home Services")
+category4 = Categories(user_id=1, id=4, category="Home Services",
+    image="https://images.unsplash.com/photo-1502343019212-cc6a09783255?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=25ae56b35a4d8c9545ea0087bc552379&auto=format&fit=crop&w=1350&q=80")
 
 session.add(category4)
 session.commit()
@@ -186,7 +189,8 @@ session.add(brand16)
 session.commit()
 
 # Brands for Pet Care Category
-category5 = Categories(user_id=1, id=5, category="Pet Care")
+category5 = Categories(user_id=1, id=5, category="Pet Care",
+    image="https://images.unsplash.com/photo-1504803542671-cb92eb06a148?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=0c453a62d33c0c3a2b43fcb44152504f&auto=format&fit=crop&w=1350&q=80")
 
 session.add(category5)
 session.commit()
@@ -208,7 +212,8 @@ session.add(brand18)
 session.commit()
 
 # Brands for Health Category
-category6 = Categories(user_id=1, id=6, category="Health")
+category6 = Categories(user_id=1, id=6, category="Health",
+    image="https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=5f384fa6a6caa83e0ffdcef585e20c99&auto=format&fit=crop&w=1350&q=80")
 
 session.add(category6)
 session.commit()
@@ -230,7 +235,8 @@ session.add(brand20)
 session.commit()
 
 # Brands for Writing Category
-category7 = Categories(user_id=1, id=7, category="Writing")
+category7 = Categories(user_id=1, id=7, category="Writing",
+    image="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=349f0586d07c10fdf29da504276b5407&auto=format&fit=crop&w=1350&q=80")
 
 session.add(category7)
 session.commit()
@@ -252,7 +258,8 @@ session.add(brand22)
 session.commit()
 
 # Brands for Programming Category
-category8 = Categories(user_id=1, id=8, category="Programming")
+category8 = Categories(user_id=1, id=8, category="Programming",
+    image="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e5a31d03ddee66863a599421f792e07b&auto=format&fit=crop&w=1350&q=80")
 
 session.add(category8)
 session.commit()
