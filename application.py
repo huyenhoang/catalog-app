@@ -38,28 +38,29 @@ def showLogin():
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     # Check state token if valid
-    if request.args.get('state') != login_sessions['state']:
-        response = make_response(json.dumps('Invalid state token.'), 401)
+    if request.args.get('state') != login_session['state']:
+        response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    # Get authorization
+    # Get authorization code
     code = request.data
     try:
         # turn authorization code into credentials object
         oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
-        oauth_flow.redirect_uri = 'postmassage'
+        oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
-        response = make_response(json.dumps(
-            'Failed to upgrade the authorization code.'), 401)
+        response = make_response(
+            json.dumps('Failed to upgrade the authorization code.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     # check that the access token is valid
     access_token = credentials.access_token
-    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
+    url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s'
+           % access_token)
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
-    # if there was an error in access token info, abort.
+    # If there was an error in the access token info, abort.
     if result.get('error') is not None:
         response = make_response(json.dumps(result.get('error')), 500)
         response.headers['Content-Type'] = 'application/json'
@@ -67,23 +68,23 @@ def gconnect():
     # verify that the access token is used for intended user
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
-        response = make_response(json.dumps(
-            "Token's user ID doesn't match given user ID."), 401)
+        response = make_response(
+            json.dumps("Token's user ID doesn't match given user ID."), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
+
     # verify that the access token is valid for this app
     if result['issued_to'] != CLIENT_ID:
-        response = make_response(json.dumps(
-            "Token's client ID does not match app's"), 401)
-        print "Token's client ID does not match app's client ID."
+        response = make_response(
+            json.dumps("Token's client ID does not match app's."), 401)
+        print "Token's client ID does not match app's."
         response.headers['Content-Type'] = 'application/json'
         return response
     # check to see if user is already logged in
-    stored_credentials = login_session.get('access_token')
+    stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps(
-            'Current user is already connected.'), 200)
+        response = make_response(json.dumps('Current user is already connected.'),200)
         response.headers['Content-Type'] = 'application/json'
         return response
     # store access token in the session for later use.
@@ -91,17 +92,16 @@ def gconnect():
     login_session['gplus_id'] = gplus_id
 
     # get user info
-    userinfo_url = "https://www.googleapis.com/oauth2/v1/usrinfo"
+    userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
 
     data = answer.json()
 
-    login_session['username'] = data["name"]
-    login_session['picture'] = data["picture"]
-    login_session['email'] = data["email"]
+    login_session['username'] = data['name']
+    login_session['picture'] = data['picture']
+    login_session['email'] = data['email']
 
-    # see if user exists, if it doesn't it doesn't make one
     user_id = getUserID(login_session['email'])
     if not user_id:
         user_id = createUser(login_session)
@@ -111,13 +111,12 @@ def gconnect():
     output += '<h1>Welcome, '
     output += login_session['username']
     output += '!</h1>'
-    output += 'img src="'
+    output += '<img src="'
     output += login_session['picture']
-    output += ' " style="width: 300px; height: 300px; border-radius: 150px; -webskit-border-radius: 150px;-moz-border-radius: 150px;">'
+    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
-
 
 # disconnect - revoke a current user's token and reset their login_session.
 
@@ -229,18 +228,20 @@ def disconnect():
         del login_session['user_id']
         del login_session['provider']
         flash("You have successfully been logged out.")
-        return redirect(url_for('showRestaurants'))
+        return redirect(url_for('showCategories'))
     else:
         flash("You were not logged in to begin with!")
         redirect(url_for('showCategories'))
+
 # for users
 
-def getUserID(email):
-    try:
-        user = session.query(User).filter_by(email=email).one()
-        return user.id
-    except:
-        return None
+
+def createUser(login_session):
+    newUser = User(name=login-session['username'], email=login_session['email'], picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
 
 
 def getUserInfo(user_id):
@@ -248,15 +249,12 @@ def getUserInfo(user_id):
     return user
 
 
-def createUser(login_session):
-    newUser = User(
-        name=login-session['username'],
-        email=login_session['email'],
-        picture=login_session['picture'])
-    session.add(newUser)
-    session.commit()
-    user = session.query(User).filter_by(email=login_session['email']).one()
-    return user.id
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
 
 # API Endpoints
 
@@ -286,18 +284,18 @@ def brandDataJSON(category_id, brand_id):
 @app.route('/categories/')
 def showCategories():
     category = session.query(Categories).order_by(Categories.category)
-    #if 'username' not in login_session:
-        #return render_template('publiccategory.html', category=category)
-    #else:
-    return render_template('category.html', category=category)
+    if 'username' not in login_session:
+        return render_template('publiccategory.html', category=category)
+    else:
+        return render_template('category.html', category=category)
 
 # Add new a category
 
 
 @app.route('/categories/new/', methods=['GET', 'POST'])
 def newCategory():
-    #if 'username' not in login_session:
-        #return redirect('/login')
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
         newCategory = Categories(category=request.form['name'], image=request.form['image'], user_id=login_session['user_id'])
         session.add(newCategory)
@@ -312,8 +310,8 @@ def newCategory():
 
 @app.route('/categories/<int:category_id>/edit/', methods=['GET', 'POST'])
 def editCategory(category_id):
-    #if 'username' not in login_session:
-        #return redirect('/login')
+    if 'username' not in login_session:
+        return redirect('/login')
     editedCategory = session.query(Categories).filter_by(id=category_id).one()
     if request.method == 'POST':
         if request.form['name']:
@@ -333,12 +331,12 @@ def editCategory(category_id):
 @app.route('/categories/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
     categoryToDelete = session.query(Categories).filter_by(id=category_id).one()
-    #if 'username' not in login_session:
-        #return redirect('/login')
-    #if categoryToDelete.user_id != login_session['user_id']:
-        #return """<script>function myFunction()
-            #{alert('Sorry but you are not authorized to delete this category.');}
-            #</script>/body onload='myFunction()''>"""
+    if 'username' not in login_session:
+        return redirect('/login')
+    if categoryToDelete.user_id != login_session['user_id']:
+        return """<script>function myFunction()
+            {alert('Sorry but you are not authorized to delete this category.');}
+            </script>/body onload='myFunction()''>"""
     if request.method == 'POST':
         session.delete(categoryToDelete)
         flash('Category %s was successfully deleted' % categoryToDelete.category)
@@ -356,20 +354,20 @@ def showBrands(category_id):
     category = session.query(Categories).filter_by(id=category_id).one()
     owner = getUserInfo(category.user_id)
     brands = session.query(Brands).filter_by(category_id=category_id)
-    #if 'username' not in login_session or owner.id != login_session['user_id']:
-        #return render_template('publicbrands.html', brands=brands, category=category, owner=owner)
-    #else:
-    return render_template('brands.html', category=category, brands=brands, owner=owner)
+    if 'username' not in login_session or owner.id != login_session['user_id']:
+        return render_template('publicbrands.html', brands=brands, category=category, owner=owner)
+    else:
+        return render_template('brands.html', category=category, brands=brands, owner=owner)
 
 # Add a new brand
 
 
 @app.route('/categories/<int:category_id>/brands/new/', methods=['GET', 'POST'])
 def newBrand(category_id):
-    #if 'username' not in login_session:
-        #return redirect('/login')
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
-        newBrand = Brands(name=request.form['name'], location=request.form['location'], description=request.form['description'], website=request.form['website'], category_id=category_id, user_id=login_session['user_id'])
+        newBrand = Brands(name=request.form['name'], location=request.form['location'], description=request.form['description'], website=request.form['website'], category_id=category_id, user_id=category.user_id)
         session.add(newBrand)
         session.commit()
         flash("A new brand has been added!")
@@ -382,8 +380,8 @@ def newBrand(category_id):
 
 @app.route('/categories/<int:category_id>/brands/<int:brand_id>/edit/', methods=['GET', 'POST'])
 def editBrand(category_id, brand_id):
-    #if 'username' not in login_session:
-        #return redirect('/login')
+    if 'username' not in login_session:
+        return redirect('/login')
     editedBrand = session.query(Brands).filter_by(id=brand_id).one()
     if request.method == 'POST':
         if request.form['name']:
@@ -406,8 +404,8 @@ def editBrand(category_id, brand_id):
 
 @app.route('/categories/<int:category_id>/brands/<int:brand_id>/delete/', methods=['GET', 'POST'])
 def deleteBrand(category_id, brand_id):
-    #if 'username' not in login_session:
-        #return redirect('/login')
+    if 'username' not in login_session:
+        return redirect('/login')
     deletedBrand = session.query(Brands).filter_by(id=brand_id).one()
     if request.method == 'POST':
         if request.form['name']:
@@ -419,28 +417,6 @@ def deleteBrand(category_id, brand_id):
     else:
         return render_template('deleteBrand.html', category_id=category_id, brand_id=brand_id, inc=deletedBrand)
 
-# for users
-
-
-def getUserID(email):
-    try:
-        user = session.query(User).filter_by(email=email).one()
-        return user.id
-    except:
-        return None
-
-
-def getUserInfo(user_id):
-    user = session.query(User).filter_by(id=user_id).one()
-    return user
-
-
-def createUser(login_session):
-    newUser = User(name=login-session['username'], email=login_session['email'], picture=login_session['picture'])
-    session.add(newUser)
-    session.commit()
-    user = session.query(User).filter_by(email=login_session['email']).one()
-    return user.id
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

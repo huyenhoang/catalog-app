@@ -14,6 +14,11 @@ a:hover, a:visited, a:link, a:active
 .fa i {
   font-size: 20px;
 }
+
+.footer-icon {
+  color:  gray;
+}
+
 /* --- Categories --- */
 
 .thumbnail {
@@ -36,7 +41,6 @@ a:hover, a:visited, a:link, a:active
   padding: 5px;
   margin: 5px;
 }
-
 
 /* --- Login page --- */
 

@@ -11,12 +11,10 @@
     <div class="col-sm-4">
       <div class="thumbnail">
         <img class="img-thumbnail rounded" src="{{category.image}}, category_id = category.id">
-        <div class="caption">
-          <a href= "{{url_for('showBrands', category_id = category.id)}}">
-              <p>{{category.category}}</p>
-          </a>
-        </div>
       </div>
+      <a href= "{{url_for('showBrands', category_id = category.id)}}">
+          <p>{{category.category}}</p>
+      </a>
     </div>
     <br>
   {% endfor %}
