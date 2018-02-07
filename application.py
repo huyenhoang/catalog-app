@@ -159,7 +159,7 @@ def fbconnect():
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
-    return response
+        return response
     access_token = request.data
     app_id = json.loads(open('fb_client_secrets.json'), 'r'())['web']['app_secret']
     url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (app_id, app_secret, access_token)
@@ -169,7 +169,7 @@ def fbconnect():
     token = result.split("&")[0]
     url = 'https://graph.facebook.com/v2.8/me?%s&fields=name,id,email' % token
     h = httplib2.Http()
-    result - h.request(url, 'GET')[1]
+    result = h.request(url, 'GET')[1]
     data = json.loads(result)
     login_session['provider'] = 'facebook'
     login_sessionp['username'] = data["name"]
