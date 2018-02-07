@@ -16,7 +16,6 @@ import requests
 app = Flask(__name__)
 
 
-
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Gig Economy Catalog App"
@@ -84,7 +83,7 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'), 200)
+        response = make_response(json.dumps('User is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
     # store access token in the session for later use.
@@ -102,7 +101,6 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
-
     user_id = getUserID(login_session['email'])
     if not user_id:
         user_id = createUser(login_session)
@@ -114,19 +112,22 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px;-webkit-border-radius: 150px;-moz-border-radius: 150px;"> '
+    output += ' " style = "width: 300px; height: 300px;'
+    output += 'border-radius: 150px;-webkit-border-radius: 150px;'
+    output += '-moz-border-radius: 150px;"> '
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
 
 # disconnect - revoke a current user's token and reset their login_session.
 
+
 @app.route('/gdisconnect')
 def gdisconnect():
     access_token = login_session.get('access_token')
     if access_token is None:
         print 'Access Token is None'
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(json.dumps('User is not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
     print 'In gdisconnect access token is %s', access_token
@@ -138,11 +139,6 @@ def gdisconnect():
     print 'result is '
     print result
     if result['status'] == '200':
-        #del login_session['access_token']
-        #del login_session['gplus_id']
-        #del login_session['username']
-        #del login_session['email']
-        #del login_session['picture']
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -153,6 +149,7 @@ def gdisconnect():
         return response
 
 # Login with facebook
+
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
@@ -327,7 +324,7 @@ def editCategory(category_id):
             editedCategory.image = request.form['image']
             session.add(editedCategory)
             session.commit()
-            flash('Category name or image successfully edited: %s' % editedCategory.category)
+            flash('Category name/image successfully edited: %s' % editedCategory.category)
             return redirect(url_for('showCategories'))
     else:
         return render_template('editCategory.html', category=editedCategory)
@@ -337,20 +334,20 @@ def editCategory(category_id):
 
 @app.route('/categories/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
-    categoryToDelete = session.query(Categories).filter_by(id=category_id).one()
+    categoryDelete = session.query(Categories).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    if categoryToDelete.user_id != login_session['user_id']:
+    if categoryDelete.user_id != login_session['user_id']:
         return """<script>function myFunction()
-            {alert('Sorry but you are not authorized to delete this category.');}
+            {alert('Sorry but you are not authorized to delete this.');}
             </script>/body onload='myFunction()''>"""
     if request.method == 'POST':
-        session.delete(categoryToDelete)
-        flash('Category %s was successfully deleted' % categoryToDelete.category)
+        session.delete(categoryDelete)
+        flash('Category %s successfully deleted' % categoryDelete.category)
         session.commit()
         return redirect(url_for('showCategories', category_id=category_id))
     else:
-        return render_template('deleteCategory.html', category=categoryToDelete)
+        return render_template('deleteCategory.html', category=categoryDelete)
 
 # Show individual category's brands (previously GigEconomy)
 
@@ -380,7 +377,9 @@ def newBrand(category_id):
             </script>
             <body onload='myFunction()'>"""
         if request.method == 'POST':
-            newBrand = Brands(name=request.form['name'], location=request.form['location'], description=request.form['description'], website=request.form['website'], category_id=category_id, user_id=category.user_id)
+            newBrand = Brands(name=request.form['name'], location=request.form['location'],
+                              description=request.form['description'], website=request.form['website'],
+                              category_id=category_id, user_id=category.user_id)
             session.add(newBrand)
             session.commit()
             flash("A new brand has been added!")
@@ -391,7 +390,8 @@ def newBrand(category_id):
 # Edit a brand
 
 
-@app.route('/categories/<int:category_id>/brands/<int:brand_id>/edit/', methods=['GET', 'POST'])
+@app.route('/categories/<int:category_id>/brands/<int:brand_id>/edit/',
+           methods=['GET', 'POST'])
 def editBrand(category_id, brand_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -410,12 +410,14 @@ def editBrand(category_id, brand_id):
         flash("Your edit has been saved")
         return redirect(url_for('showBrands', category_id=category_id))
     else:
-        return render_template('editBrand.html', category_id=category_id, brand_id=brand_id, inc=editedBrand)
+        return render_template('editBrand.html', category_id=category_id,
+                               brand_id=brand_id, inc=editedBrand)
 
 # Delete a brand
 
 
-@app.route('/categories/<int:category_id>/brands/<int:brand_id>/delete/', methods=['GET', 'POST'])
+@app.route('/categories/<int:category_id>/brands/<int:brand_id>/delete/',
+           methods=['GET', 'POST'])
 def deleteBrand(category_id, brand_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -428,7 +430,8 @@ def deleteBrand(category_id, brand_id):
         flash("Brand has been deleted!")
         return redirect(url_for('showBrands', category_id=category_id))
     else:
-        return render_template('deleteBrand.html', category_id=category_id, brand_id=brand_id, inc=deletedBrand)
+        return render_template('deleteBrand.html', category_id=category_id,
+                               brand_id=brand_id, inc=deletedBrand)
 
 
 if __name__ == '__main__':
