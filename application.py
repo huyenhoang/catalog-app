@@ -97,10 +97,11 @@ def gconnect():
     answer = requests.get(userinfo_url, params=params)
 
     data = answer.json()
-
+    login_session['provider'] = 'google'
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
+
 
     user_id = getUserID(login_session['email'])
     if not user_id:
@@ -137,11 +138,11 @@ def gdisconnect():
     print 'result is '
     print result
     if result['status'] == '200':
-        del login_session['access_token']
-        del login_session['gplus_id']
-        del login_session['username']
-        del login_session['email']
-        del login_session['picture']
+        #del login_session['access_token']
+        #del login_session['gplus_id']
+        #del login_session['username']
+        #del login_session['email']
+        #del login_session['picture']
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -174,14 +175,17 @@ def fbconnect():
     login_sessionp['username'] = data["name"]
     login_session['email'] = data["email"]
     login_session['facebook_id'] = data["id"]
+    # for logging out, store token in logn_session
+    login_session['access_token'] = token
 
-# get user pic
+    # get user pic
     url = 'https://graph.facebook/v2.2/me/picture?%s&redirect=0&height=200&width=200' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
-    login_session['picture'] = data["data"]["url"]
 
+    login_session['picture'] = data["data"]["url"]
+    # check existence of user
     user_id = getUserID(login_session['email'])
     if not user_id:
         user_id = createUser(login_session)
@@ -201,7 +205,9 @@ def fbconnect():
 @app.route('/fbdisconnect')
 def fbdisconnect():
     facebook_id = login_session['facebook_id']
-    url = 'https://graph.facebook.com/%s/permissions' % facebook_id
+    # The access token must me included to successfully logout
+    access_token = login_session['access_token']
+    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     del login_session['username']
@@ -218,7 +224,7 @@ def disconnect():
         if login_session['provider'] == 'google':
             gdisconnect()
             del login_session['gplus_id']
-            del login_session['credentials']
+            del login_session['access_token']
         if login_session['provider'] == 'facebook':
             fbdisconnect()
             del login_session['facebook_id']
@@ -231,7 +237,7 @@ def disconnect():
         return redirect(url_for('showCategories'))
     else:
         flash("You were not logged in to begin with!")
-        redirect(url_for('showCategories'))
+        return redirect(url_for('showCategories'))
 
 # for users
 
@@ -366,12 +372,18 @@ def showBrands(category_id):
 def newBrand(category_id):
     if 'username' not in login_session:
         return redirect('/login')
-    if request.method == 'POST':
-        newBrand = Brands(name=request.form['name'], location=request.form['location'], description=request.form['description'], website=request.form['website'], category_id=category_id, user_id=category.user_id)
-        session.add(newBrand)
-        session.commit()
-        flash("A new brand has been added!")
-        return redirect(url_for('showBrands', category_id=category_id))
+    category = session.query(Categories).filter_by(id=category_id).one()
+    if login_session['user_id'] != category.user_id:
+        return """<script>function myFunction() {
+            alert('You are not authorized to add brands to this category.');}
+            </script>
+            <body onload='myFunction()'>"""
+        if request.method == 'POST':
+            newBrand = Brands(name=request.form['name'], location=request.form['location'], description=request.form['description'], website=request.form['website'], category_id=category_id, user_id=category.user_id)
+            session.add(newBrand)
+            session.commit()
+            flash("A new brand has been added!")
+            return redirect(url_for('showBrands', category_id=category_id))
     else:
         return render_template('newBrand.html', category_id=category_id)
 
