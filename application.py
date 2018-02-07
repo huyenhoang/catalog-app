@@ -161,25 +161,31 @@ def fbconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     access_token = request.data
-    app_id = json.loads(open('fb_client_secrets.json'), 'r'())['web']['app_secret']
-    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (app_id, app_secret, access_token)
+    app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
+        'web']['app_id']
+    app_secret = json.loads(
+        open('fb_client_secrets.json', 'r').read())['web']['app_secret']
+    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
+        app_id, app_secret, access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
-    userinfo_url = "http://graph.facebook.com/v2.2/me"
-    token = result.split("&")[0]
-    url = 'https://graph.facebook.com/v2.8/me?%s&fields=name,id,email' % token
+
+    userinfo_url = "https://graph.facebook.com/v2.8/me"
+
+    token = result.split(',')[0].split(':')[1].replace('"', '')
+    url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
     login_session['provider'] = 'facebook'
-    login_sessionp['username'] = data["name"]
+    login_session['username'] = data["name"]
     login_session['email'] = data["email"]
     login_session['facebook_id'] = data["id"]
     # for logging out, store token in logn_session
     login_session['access_token'] = token
 
     # get user pic
-    url = 'https://graph.facebook/v2.2/me/picture?%s&redirect=0&height=200&width=200' % token
+    url = 'https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&height=200&width=200' % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -210,11 +216,6 @@ def fbdisconnect():
     url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
-    del login_session['username']
-    del login_session['email']
-    del login_session['picture']
-    del login_session['user_id']
-    del login_session['facebook_id']
     return "you have been logged out"
 
 
