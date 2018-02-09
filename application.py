@@ -29,7 +29,8 @@ session = DBSession()
 
 @app.route('/login/')
 def showLogin():
-    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+    state = ''.join(random.choice(
+            string.ascii_uppercase + string.digits) for x in xrange(32))
     login_session['state'] = state
     return render_template('login.html', STATE=state)
 
@@ -200,7 +201,8 @@ def fbconnect():
     output += '!</h1>'
     output += 'img src="'
     output += login_session['picture']
-    output += ' " style="width: 300px; height: 300px; border-radius: 150px; -webskit-border-radius: 150px;-moz-border-radius: 150px;">'
+    output += ' " style="width: 300px; height: 300px; border-radius: 150px;'
+    output += '-webskit-border-radius: 150px;-moz-border-radius: 150px;">'
     flash("you are now logged in as %s" % login_session['username'])
     return output
 
@@ -241,7 +243,9 @@ def disconnect():
 
 
 def createUser(login_session):
-    newUser = User(name=login_session['username'], email=login_session['email'], picture=login_session['picture'])
+    newUser = User(name=login_session['username'],
+                   email=login_session['email'],
+                   picture=login_session['picture'])
     session.add(newUser)
     session.commit()
     user = session.query(User).filter_by(email=login_session['email']).one()
@@ -301,7 +305,9 @@ def newCategory():
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
-        newCategory = Categories(category=request.form['name'], image=request.form['image'], user_id=login_session['user_id'])
+        newCategory = Categories(category=request.form['name'],
+                                 image=request.form['image'],
+                                 user_id=login_session['user_id'])
         session.add(newCategory)
         flash('Category %s successfully added to list' % newCategory.category)
         session.commit()
@@ -324,7 +330,7 @@ def editCategory(category_id):
             editedCategory.image = request.form['image']
             session.add(editedCategory)
             session.commit()
-            flash('Category name/image successfully edited: %s' % editedCategory.category)
+            flash('Category successfully edited: %s' % editedCategory.category)
             return redirect(url_for('showCategories'))
     else:
         return render_template('editCategory.html', category=editedCategory)
@@ -359,9 +365,11 @@ def showBrands(category_id):
     owner = getUserInfo(category.user_id)
     brands = session.query(Brands).filter_by(category_id=category_id)
     if 'username' not in login_session or owner.id != login_session['user_id']:
-        return render_template('publicbrands.html', brands=brands, category=category, owner=owner)
+        return render_template('publicbrands.html', brands=brands,
+                               category=category, owner=owner)
     else:
-        return render_template('brands.html', category=category, brands=brands, owner=owner)
+        return render_template('brands.html', category=category,
+                               brands=brands, owner=owner)
 
 # Add a new brand
 
@@ -377,9 +385,12 @@ def newBrand(category_id):
             </script>
             <body onload='myFunction()'>"""
         if request.method == 'POST':
-            newBrand = Brands(name=request.form['name'], location=request.form['location'],
-                              description=request.form['description'], website=request.form['website'],
-                              category_id=category_id, user_id=category.user_id)
+            newBrand = Brands(name=request.form['name'],
+                              location=request.form['location'],
+                              description=request.form['description'],
+                              website=request.form['website'],
+                              category_id=category_id,
+                              user_id=category.user_id)
             session.add(newBrand)
             session.commit()
             flash("A new brand has been added!")
