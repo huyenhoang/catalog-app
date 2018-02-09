@@ -24,13 +24,13 @@
             <button type="submit" class="btn btn-primary btn-lg" id="submit" type="submit">
                 <i class="fa fa-plus" aria-hidden="true"></i> Create
             </button>
-        <!--Cancel, basically a back button                 -->
-            <a href='{{ url_for('showCategories')}}'>
-                <button class="btn btn-danger btn-lg">
-                    <i class="fa fa-times" aria-hidden="true"></i> Cancel
-                </button>
-            </a>
         </div>
     </form>
+    <!--Cancel, basically a back button                 -->
+        <a class="container-fluid" href='{{ url_for('showCategories')}}'>
+            <button class="btn btn-danger btn-lg">
+                <i class="fa fa-times" aria-hidden="true"></i> Cancel
+            </button>
+        </a>
 </div>
 {% endblock %}
