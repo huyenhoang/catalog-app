@@ -3,11 +3,17 @@
 {% block content %}
 <!-- Brands' owner -->
     <h2>{{ category.category }}:</h2>
-          <!-- <img src="{{owner.picture}}" class="img-thumbnail"> -->
-          <!-- <p>{{owner.name}} make money on these platforms in this category:</p> -->
-        <ul>
-            {% for inc in brands %}
-            <li><a class="brand-website-link" href="https://www.{{inc.website}}" target="_blank">{{ inc.name }}</a></li>
-            {% endfor %}
-        </ul>
+    <div class="row container-fluid">
+        <div class="col-md-4">
+          <img src="{{owner.picture}}" class="img-thumbnail">
+          <p>{{owner.name}} make money on these platforms in this category:</p>
+        </div>
+        <div class="col">
+          <ul>
+              {% for inc in brands %}
+              <li><a class="brand-website-link" href="https://www.{{inc.website}}" target="_blank">{{ inc.name }}</a></li>
+              {% endfor %}
+          </ul>
+        </div>
+    </div>
 {% endblock %}
