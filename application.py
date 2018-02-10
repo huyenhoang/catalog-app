@@ -239,7 +239,9 @@ def disconnect():
         flash("You were not logged in to begin with!")
         return redirect(url_for('showCategories'))
 
-# for users
+# For new users. Next three functions: 1) create new user at login
+# 2) Use to get user information from DB
+# 3) Return the ID of this user.
 
 
 def createUser(login_session):
@@ -384,17 +386,17 @@ def newBrand(category_id):
             alert('You are not authorized to add brands to this category.');}
             </script>
             <body onload='myFunction()'>"""
-        if request.method == 'POST':
-            newBrand = Brands(name=request.form['name'],
-                              location=request.form['location'],
-                              description=request.form['description'],
-                              website=request.form['website'],
-                              category_id=category_id,
-                              user_id=category.user_id)
-            session.add(newBrand)
-            session.commit()
-            flash("A new brand has been added!")
-            return redirect(url_for('showBrands', category_id=category_id))
+    if request.method == 'POST':
+        newBrand = Brands(name=request.form['name'],
+                          location=request.form['location'],
+                          description=request.form['description'],
+                          website=request.form['website'],
+                          category_id=category_id,
+                          user_id=category.user_id)
+        session.add(newBrand)
+        session.commit()
+        flash("A new brand has been added!")
+        return redirect(url_for('showBrands', category_id=category_id))
     else:
         return render_template('newBrand.html', category_id=category_id)
 
