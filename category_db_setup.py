@@ -34,6 +34,7 @@ class Categories(Base):
     image = Column(String(250), nullable=False)
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship(User)
+    brands = relationship('Brands', cascade='all, delete-orphan')
 
     @property
     def serialize(self):
