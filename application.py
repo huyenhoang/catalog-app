@@ -322,9 +322,13 @@ def newCategory():
 
 @app.route('/categories/<int:category_id>/edit/', methods=['GET', 'POST'])
 def editCategory(category_id):
+    editedCategory = session.query(Categories).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    editedCategory = session.query(Categories).filter_by(id=category_id).one()
+    if editedCategory.user_id != login_session['user_id']:
+        return """<script>function myFunction()
+            {alert('Sorry but you are not authorized to edit this.');}
+            </script>/body onload='myFunction()''>"""
     if request.method == 'POST':
         if request.form['name']:
             editedCategory.category = request.form['name']
@@ -406,9 +410,13 @@ def newBrand(category_id):
 @app.route('/categories/<int:category_id>/brands/<int:brand_id>/edit/',
            methods=['GET', 'POST'])
 def editBrand(category_id, brand_id):
+    editedBrand = session.query(Brands).filter_by(id=brand_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    editedBrand = session.query(Brands).filter_by(id=brand_id).one()
+    if editedBrand.user_id != login_session['user_id']:
+        return """<script>function myFunction()
+            {alert('Sorry but you are not authorized to edit this.');}
+            </script>/body onload='myFunction()''>"""
     if request.method == 'POST':
         if request.form['name']:
             editedBrand.name = request.form['name']
@@ -432,9 +440,13 @@ def editBrand(category_id, brand_id):
 @app.route('/categories/<int:category_id>/brands/<int:brand_id>/delete/',
            methods=['GET', 'POST'])
 def deleteBrand(category_id, brand_id):
+    deletedBrand = session.query(Brands).filter_by(id=brand_id).one()
     if 'username' not in login_session:
         return redirect('/login')
-    deletedBrand = session.query(Brands).filter_by(id=brand_id).one()
+    if deletedBrand.user_id != login_session['user_id']:
+        return """<script>function myFunction()
+            {alert('Sorry but you are not authorized to delete this.');}
+            </script>/body onload='myFunction()''>"""
     if request.method == 'POST':
         if request.form['name']:
             deletedBrand.name = request.form['name']
