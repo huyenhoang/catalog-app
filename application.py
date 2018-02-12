@@ -328,7 +328,7 @@ def editCategory(category_id):
     if editedCategory.user_id != login_session['user_id']:
         return """<script>function myFunction()
             {alert('Sorry but you are not authorized to edit this.');}
-            </script>/body onload='myFunction()''>"""
+            </script><body onload='myFunction()''>"""
     if request.method == 'POST':
         if request.form['name']:
             editedCategory.category = request.form['name']
@@ -352,7 +352,7 @@ def deleteCategory(category_id):
     if categoryDelete.user_id != login_session['user_id']:
         return """<script>function myFunction()
             {alert('Sorry but you are not authorized to delete this.');}
-            </script>/body onload='myFunction()''>"""
+            </script><body onload='myFunction()''>"""
     if request.method == 'POST':
         session.delete(categoryDelete)
         flash('Category %s successfully deleted' % categoryDelete.category)
@@ -388,8 +388,7 @@ def newBrand(category_id):
     if login_session['user_id'] != category.user_id:
         return """<script>function myFunction() {
             alert('You are not authorized to add brands to this category.');}
-            </script>
-            <body onload='myFunction()'>"""
+            </script><body onload='myFunction()'>"""
     if request.method == 'POST':
         newBrand = Brands(name=request.form['name'],
                           location=request.form['location'],
@@ -416,7 +415,7 @@ def editBrand(category_id, brand_id):
     if editedBrand.user_id != login_session['user_id']:
         return """<script>function myFunction()
             {alert('Sorry but you are not authorized to edit this.');}
-            </script>/body onload='myFunction()''>"""
+            </script><body onload='myFunction()''>"""
     if request.method == 'POST':
         if request.form['name']:
             editedBrand.name = request.form['name']
@@ -446,7 +445,7 @@ def deleteBrand(category_id, brand_id):
     if deletedBrand.user_id != login_session['user_id']:
         return """<script>function myFunction()
             {alert('Sorry but you are not authorized to delete this.');}
-            </script>/body onload='myFunction()''>"""
+            </script><body onload='myFunction()''>"""
     if request.method == 'POST':
         if request.form['name']:
             deletedBrand.name = request.form['name']
