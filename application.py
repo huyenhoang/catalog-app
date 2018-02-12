@@ -322,9 +322,9 @@ def newCategory():
 
 @app.route('/categories/<int:category_id>/edit/', methods=['GET', 'POST'])
 def editCategory(category_id):
-    editedCategory = session.query(Categories).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
+    editedCategory = session.query(Categories).filter_by(id=category_id).one()
     if editedCategory.user_id != login_session['user_id']:
         return """<script>function myFunction()
             {alert('Sorry but you are not authorized to edit this.');}
@@ -346,9 +346,9 @@ def editCategory(category_id):
 
 @app.route('/categories/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
-    categoryDelete = session.query(Categories).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
+    categoryDelete = session.query(Categories).filter_by(id=category_id).one()
     if categoryDelete.user_id != login_session['user_id']:
         return """<script>function myFunction()
             {alert('Sorry but you are not authorized to delete this.');}
@@ -409,9 +409,9 @@ def newBrand(category_id):
 @app.route('/categories/<int:category_id>/brands/<int:brand_id>/edit/',
            methods=['GET', 'POST'])
 def editBrand(category_id, brand_id):
-    editedBrand = session.query(Brands).filter_by(id=brand_id).one()
     if 'username' not in login_session:
         return redirect('/login')
+    editedBrand = session.query(Brands).filter_by(id=brand_id).one()
     if editedBrand.user_id != login_session['user_id']:
         return """<script>function myFunction()
             {alert('Sorry but you are not authorized to edit this.');}
@@ -439,9 +439,9 @@ def editBrand(category_id, brand_id):
 @app.route('/categories/<int:category_id>/brands/<int:brand_id>/delete/',
            methods=['GET', 'POST'])
 def deleteBrand(category_id, brand_id):
-    deletedBrand = session.query(Brands).filter_by(id=brand_id).one()
     if 'username' not in login_session:
         return redirect('/login')
+    deletedBrand = session.query(Brands).filter_by(id=brand_id).one()
     if deletedBrand.user_id != login_session['user_id']:
         return """<script>function myFunction()
             {alert('Sorry but you are not authorized to delete this.');}
